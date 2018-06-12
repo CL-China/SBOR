@@ -11,14 +11,14 @@ dic = 'ordinal-regression';
 for i = 1:I
 % data = load(['../data/train_toy.',num2str(i)]);
 
-data = load(['./datasets/',name,'/matlab/train_',name,'.',num2str(i-1)]);
+data = load(['../datasets/',name,'/matlab/train_',name,'.',num2str(i-1)]);
 
 train_x = data(:,1:end-1);
 train_y = data(:,end);
 
 
 % test = load(['../data/test_toy.',num2str(i)]);
-test = load(['./datasets/',name,'/matlab/test_',name,'.',num2str(i-1)]);
+test = load(['../datasets/',name,'/matlab/test_',name,'.',num2str(i-1)]);
 
 test_x = test(:,1:end-1);
 test_y = test(:,end);
