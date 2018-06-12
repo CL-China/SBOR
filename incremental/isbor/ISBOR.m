@@ -338,36 +338,35 @@ while (~LAST_ITERATION)
         count = count + 1;
         logMarginalLog(count) = logML;
     
-        % update the threshold
-        % #1 linear searche
-        
-        y = k_nz *w;
-        for j = 2 : T
-            y1 = (y(train_y==j-1));
-            y2 = (y(train_y==j));
-            y_max = max(y1); 
-            y_min = min(y2);
-            by(j) = mean([y1(y1>y_min);y2(y2<y_max)]);
-            if isnan(by(j))
-                by(j) = (y_n(j-1)*y_max + y_n(j)*y_min)/(y_n(j-1)+y_n(j));
+        %% update the threshold
+        if CONTROLS.update_threshold == 1
+            % #1 linear searche
+            y = k_nz *w;
+            for j = 2 : T
+                y1 = (y(train_y==j-1));
+                y2 = (y(train_y==j));
+                y_max = max(y1); 
+                y_min = min(y2);
+                by(j) = mean([y1(y1>y_min);y2(y2<y_max)]);
+                if isnan(by(j))
+                    by(j) = (y_n(j-1)*y_max + y_n(j)*y_min)/(y_n(j-1)+y_n(j));
+                end
+            end
+        else
+            % #2 based on eq 17&18 
+            if  ~rem(i+1,10)
+            delta_g = -sum(delta);    
+            for j = 2 : T
+                delta_g = delta_g - sum(delta(train_y <= j-1)) +...
+                    sum(delta_eq(train_y == j-1));
+                g_b(j) = g_b(j-1) + 0.01*CONTROLS.learning_rate/N * delta_g ;
+
+            end
+            by(2:T) = by(2:T) + g_b(2:T);
             end
         end
-        
-%         e(count) = predict(train_x,train_x,train_y,w./scale(used)',used,by,OPTIONS.theta,sigma);
+        %         e(count) = predict(train_x,train_x,train_y,w./scale(used)',used,by,OPTIONS.theta,sigma);
 
-        % #2 based on eq 17&18 
-%         we actually need r-1 by, and r-2 delta
-%         if  ~rem(i+1,10)
-%         delta_g = -sum(delta);    
-%         for j = 2 : T
-%             delta_g = delta_g - sum(delta(train_y <= j-1)) +...
-%                 sum(delta_eq(train_y == j-1));
-%             g_b(j) = g_b(j-1) + 0.01*CONTROLS.learning_rate/N * delta_g ;
-%             
-%         end
-%         by(2:T) = by(2:T) + g_b(2:T);
-%         end
-        
     %     
     %     if ~rem(i,10)
     %         fprintf('%d>>> log-maginal: %f\n',i,logML);

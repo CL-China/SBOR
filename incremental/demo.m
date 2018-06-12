@@ -11,7 +11,7 @@ K = 10;
 theta_list = [0.1:.05:1,1.1:.2:1.8,2:0.5:5,6:10];
 kernel_ = 'gauss';
 name = 'new_toy1000';
-dddd = './datasets/new_toy';
+dddd = '../datasets/';
 % dddd = '../datasets';
 
 for j = 1:I
@@ -34,10 +34,10 @@ for j = 1:I
     test_x = tmp(length(train_x)+1:end,:);
 %     
     
-    basisWidth = 0.05;
+    basisWidth = 0.1;
     dimension = size(train_x,2);
     basisWidth	= basisWidth^(1/dimension);
-    OPTIONS = SBOR_Options('THETA',0.1,...
+    OPTIONS = SBOR_Options('THETA',0.1 ,...
         'fixedNoise',true,...
         'ITERATIONS', 50);
     tic;

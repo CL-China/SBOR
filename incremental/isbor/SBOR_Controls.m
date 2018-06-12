@@ -80,3 +80,8 @@ CONTROLS.AlignmentMax			= 1 - ALIGNMENT_ZERO;
 CONTROLS.learning_rate = 1;
 
 CONTROLS.STEP_MIN = 2^-8;
+
+% Threshold update
+% 1: naive
+% 2: linear search based on eq. 17 and eq.18
+CONTROLS.update_threshold = 1;
